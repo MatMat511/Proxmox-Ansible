@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  ansible:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Test inventory
+        run: |
+          ansible all -i inventory.ini -m ping
+
+      - name: Run playbook
+        run: |
+          ansible-playbook -i inventory.ini deploy.yml
